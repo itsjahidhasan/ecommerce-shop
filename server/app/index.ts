@@ -1,3 +1,3 @@
-import app from "../src/server";
+import app from "../src/v-server";
 
 export default app;
