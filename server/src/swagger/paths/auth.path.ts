@@ -1,52 +1,34 @@
 export const authPath = {
-  "/auth/register": {
+  "/api/v1/auth/register": {
     post: {
       tags: ["Auth"],
-      summary: "Register a new user",
-      description: "Register for a new user using ai services",
+      summary: "Register new user",
+      description: "Create a new user account with email and password",
       requestBody: {
         required: true,
         content: {
           "application/json": {
             schema: {
               type: "object",
-              required: ["firebaseToken"],
+              required: ["firstName", "lastName", "email", "password"],
               properties: {
-                firebaseToken: {
+                firstName: {
                   type: "string",
-                  description: "Firebase authentication token for the user.",
+                  example: "Jahid",
                 },
-              },
-            },
-          },
-        },
-      },
-      responses: {
-        201: {
-          description: "User registered successfully",
-          content: {
-            "application/json": {},
-          },
-        },
-      },
-    },
-  },
-  "/auth/login": {
-    post: {
-      tags: ["Auth"],
-      summary: "Login a user",
-      description: "login for a user using ai services",
-      requestBody: {
-        required: true,
-        content: {
-          "application/json": {
-            schema: {
-              type: "object",
-              required: ["firebaseToken"],
-              properties: {
-                firebaseToken: {
+                lastName: {
                   type: "string",
-                  description: "Firebase authentication token for the user.",
+                  example: "Hasan",
+                },
+                email: {
+                  type: "string",
+                  format: "email",
+                  example: "jahid@example.com",
+                },
+                password: {
+                  type: "string",
+                  format: "password",
+                  example: "StrongPass123!",
                 },
               },
             },
@@ -61,18 +43,103 @@ export const authPath = {
               schema: {
                 type: "object",
                 properties: {
-                  accessToken: {
+                  _id: {
                     type: "string",
-                    description: "JWT access token for the user.",
+                    example: "6652a8bfa21b3e9b08f77291",
                   },
-                  refreshToken: {
+                  firstName: {
                     type: "string",
-                    description: "JWT access token for the user.",
+                    example: "Jahid",
+                  },
+                  email: {
+                    type: "string",
+                    example: "jahid@example.com",
+                  },
+                  role: {
+                    type: "string",
+                    example: "user",
+                  },
+                  token: {
+                    type: "string",
+                    description: "JWT access token",
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
                   },
                 },
               },
             },
           },
+        },
+        400: {
+          description: "User already exists or invalid input",
+        },
+      },
+    },
+  },
+
+  "/api/v1/auth/login": {
+    post: {
+      tags: ["Auth"],
+      summary: "Login user",
+      description: "Authenticate user and return JWT token",
+      requestBody: {
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              required: ["email", "password"],
+              properties: {
+                email: {
+                  type: "string",
+                  format: "email",
+                  example: "jahid@example.com",
+                },
+                password: {
+                  type: "string",
+                  format: "password",
+                  example: "StrongPass123!",
+                },
+              },
+            },
+          },
+        },
+      },
+      responses: {
+        200: {
+          description: "Login successful",
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  _id: {
+                    type: "string",
+                    example: "6652a8bfa21b3e9b08f77291",
+                  },
+                  firstName: {
+                    type: "string",
+                    example: "Jahid",
+                  },
+                  email: {
+                    type: "string",
+                    example: "jahid@example.com",
+                  },
+                  role: {
+                    type: "string",
+                    example: "user",
+                  },
+                  token: {
+                    type: "string",
+                    description: "JWT access token",
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                  },
+                },
+              },
+            },
+          },
+        },
+        401: {
+          description: "Invalid email or password",
         },
       },
     },

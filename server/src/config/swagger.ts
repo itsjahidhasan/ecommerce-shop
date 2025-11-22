@@ -1,5 +1,7 @@
 import { getTags } from "../swagger/tags";
 import { authPath } from "../swagger/paths/auth.path";
+import { userPaths } from "../swagger/paths/user.path";
+import { securitySchemes } from "../swagger/security.schemes";
 
 const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
@@ -11,16 +13,13 @@ const swaggerOptions = {
       version: "1.0.0",
       description: "API documentation for the AI Backend project.",
     },
+    // security: [{ BearerAuth: [] }],
     tags: [...getTags],
-    paths: { ...authPath },
+    paths: { ...authPath, ...userPaths },
     components: {
       schemas: {},
       securitySchemes: {
-        bearerAuth: {
-          type: "http",
-          scheme: "bearer",
-          bearerFormat: "JWT",
-        },
+        ...securitySchemes,
       },
     },
   },
