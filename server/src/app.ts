@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import { notFound, errorHandler } from "./middleware/errorMiddleware";
+import { setupSwaggerDocs } from "./config/swagger";
 
 // Import Routes
 import authRoutes from "./routes/v1/authRoutes";
@@ -11,6 +12,8 @@ import adminRoutes from "./routes/v1/adminRoutes";
 // Admin routes should be imported last or secured correctly
 
 const app = express();
+
+setupSwaggerDocs(app);
 
 // Middleware
 app.use(cors()); // Allow cross-origin requests
